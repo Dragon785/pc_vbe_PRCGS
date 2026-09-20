@@ -97,7 +97,6 @@ unsigned char* GetVideoFrameBuffer(unsigned short mode) {
     unsigned long dos_buffer;
     int x, y;
 
-    // 1. Allocate a chunk of low DOS memory (below 1MB) for VBE struct using DPMI
     union REGS r;
     r.x.eax = 0x0100; // DPMI Allocate DOS Memory Block
     r.x.ebx = (sizeof(VBE_MODE_INFO) + 15) >> 4; // Paragraphs
@@ -108,7 +107,6 @@ unsigned char* GetVideoFrameBuffer(unsigned short mode) {
         return NULL;
     }
 
-    // Calculate linear and real-mode segment pointers
     dos_buffer = (r.x.eax & 0xFFFF) << 4;
     unsigned short dos_seg = r.x.eax & 0xFFFF;
     mode_info = (VBE_MODE_INFO*)dos_buffer;

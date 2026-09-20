@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <memory.h>
 
 #include "vbe32.h"
 #include "prcgs.h"
@@ -37,8 +38,6 @@ int main(int argc,char* argv[])
 
         return -1;
     }
-    printf("Picture Size(%d,%d)\n",width,height);
-
     if (Extract(red,green,blue))
     {
         printf("Extract Failed\n");
@@ -81,5 +80,20 @@ int main(int argc,char* argv[])
 
     getch();
     RestoreVideo();
+    
+    printf("Picture Size(%d,%d)\n",width,height);
+    // PRCGSでは文字列の末尾のNULLは保障されていない
+    unsigned char databuf[17] = { 0 };
+    memcpy(databuf, &Header.appAuthor, 8);
+    printf("ソフト作者:%s\n", databuf);
+    memcpy(databuf, &Header.datAuthor, 8);
+    printf("データ作者:%s\n", databuf);
+    memcpy(databuf, &Header.createYMD, 8);
+    printf("データ作成年月日:%s\n", databuf);
+    memcpy(databuf, &Header.createHMS, 8);
+    printf("データ作成時刻:%s\n", databuf);
+    memcpy(databuf, &Header.datMachine, 16);
+    printf("データ作成マシン:%s\n", databuf);
+    
     return 0;
 }
