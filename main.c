@@ -54,16 +54,27 @@ int main(int argc,char* argv[])
     }
 
 
-    for (int i=0;i<bufsize;++i)
+	unsigned char* r=red;
+	unsigned char* g=green;
+	unsigned char* b=blue;
+
+	int base=0;
+    for (int y=0;y<height;++y)
     {
-        unsigned char r=red[i]>>3;
-        unsigned char g=green[i]>>3;
-        unsigned char b=blue[i]>>3;
+    	int w=base;
+    	for (int x=0;x<width;++x)
+    	{
+    		unsigned char rr=*r++>>3;
+    		unsigned char gg=*g++>>3;
+    		unsigned char bb=*b++>>3;
+	        uint16_t writeval=(uint16_t)(rr)<<10|
+	        				(uint16_t)(gg)<<5|
+	        				(uint16_t)(bb);
 
-        uint16_t writeval=(uint16_t)(r)<<10|(uint16_t)(g)<<5|(uint16_t)(b);
-
-        fbuf[i*2+0]=writeval&0xff;
-        fbuf[i*2+1]=writeval>>8;
+	        fbuf[w++]=writeval&0xff;
+			fbuf[w++]=writeval>>8;
+        }
+        base+=640*2;
     }
 
     free(red);free(green);free(blue);

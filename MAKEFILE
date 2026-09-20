@@ -3,6 +3,6 @@
 CFLAGS=-zk0 -za99
 CC=wcl386
 
-lookvbe.exe:main.c prcgs.c vbe32.c
-	$(CC) $(CFLAGS) -fe=$@ main.c prcgs.c vbe32.c
+lookvbe.exe : main.c prcgs.c vbe32.c
+	$(CC) $(CFLAGS) -fe=lookvbe.exe main.c prcgs.c vbe32.c
 
