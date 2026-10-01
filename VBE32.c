@@ -63,6 +63,8 @@ static int dpmi_int(int int_num, DPMI_REGS* regs) {
 // Maps a physical memory address to a linear pointer in 32-bit Protected Mode
 static void* map_physical_memory(unsigned long phys_addr, unsigned long size) {
     union REGS r;
+
+    memset(&r, 0, sizeof(r));
     r.x.eax = 0x0800;         // DPMI Physical Address Mapping
     r.x.ebx = phys_addr >> 16;
     r.x.ecx = phys_addr & 0xFFFF;
@@ -78,6 +80,9 @@ static void* map_physical_memory(unsigned long phys_addr, unsigned long size) {
 static void unmap_physical_memory(unsigned long phys_addr)
 {
     union REGS r;
+
+    memset(&r, 0, sizeof(r));
+
     r.x.eax=0x0801; // DPMI Unmap Address
     r.x.ebx=phys_addr>>16;
     r.x.ecx=phys_addr&0xffff;
